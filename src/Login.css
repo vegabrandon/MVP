@@ -1,0 +1,55 @@
+
+.login-button{
+  background-image: linear-gradient(to left, #2b1b1b, #3a1c1c, #491d1d, #571d1d, #661c1c);
+  border-radius: 50px;
+  border: none;
+  padding: 10px;
+  color: white;
+  display: inline-block;
+  margin-bottom: 20px;
+  width: 60px;
+
+
+}
+/* .login-button:hover {
+  animation: gradient 1s ease-in 1s;
+  animation-fill-mode: forwards;
+
+}
+
+@keyframes gradient {
+  100% {background-image: linear-gradient(to left, #815454, #996347, #9b7c36, #839b38, #3cb961);}
+} */
+.login-button:hover {
+  cursor: pointer;
+  outline: 1px solid rgba(255, 255, 255, 0.478);
+
+}
+
+.login {
+  display: inline-flex;
+  flex-direction: row;
+  width: 30vw;
+  margin-left: 35vw;
+  justify-content: space-evenly;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.login-form-button {
+  background-color: #661c1c;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-weight: bolder;
+  margin-top: 30px;
+
+}
+.login-form-button:hover {
+  cursor: pointer;
+
+}
