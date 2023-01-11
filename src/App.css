@@ -9,5 +9,46 @@ body {
 h1 {
   color:white;
   text-align: center;
-margin-top: 50px;
+
+}
+
+.logout-button {
+  background-color: #661c1c;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-weight: bolder;
+  margin-left: 40px;
+
+
+}
+.logout-button:hover {
+  cursor: pointer;
+}
+.flex-row {
+  display:flex;
+  width: 100%;
+}
+
+.center{
+  justify-content: center;
+}
+
+.home-log-in {
+  display:inline-block;
+  margin-top: 100px;
+  width: 100vw;
+  text-align: center;
+}
+#logged-in{
+  justify-content: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-evenly {
+  justify-content: space-evenly;
 }

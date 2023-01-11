@@ -4,12 +4,12 @@
   border-radius: 50px;
   border: none;
   padding: 10px;
+
   color: white;
   display: inline-block;
   margin-bottom: 20px;
-  width: 60px;
-
-
+  width: 70px;
+  transition: 0.2s;
 }
 /* .login-button:hover {
   animation: gradient 1s ease-in 1s;
@@ -23,14 +23,17 @@
 .login-button:hover {
   cursor: pointer;
   outline: 1px solid rgba(255, 255, 255, 0.478);
+  color: white;
+  font-weight: bold;
 
 }
 
 .login {
+  margin-top: 10vh;
   display: inline-flex;
   flex-direction: row;
   width: 30vw;
-  margin-left: 35vw;
+
   justify-content: space-evenly;
 }
 
@@ -51,5 +54,4 @@
 }
 .login-form-button:hover {
   cursor: pointer;
-
 }

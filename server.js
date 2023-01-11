@@ -3,6 +3,8 @@ var session = require('./session.js')
 var app = express();
 var db = require('./db');
 var cookieParser = require('cookie-parser')
+var axios = require('axios');
+const { resolve } = require('./webpack.config.js');
 require('dotenv').config()
 
 console.log(__dirname + '/client/dist')
@@ -14,7 +16,6 @@ app.use(session);
 app.get('/session', (req, res) => {
   db.isSessionLoggedIn(req.session_id)
     .then(data => {
-      console.log('SESSION IS ', data)
       res.send(data)
     })
     .catch(err => {
@@ -43,10 +44,16 @@ app.post('/login', (req, res) => {
   console.log(req.body, req.session_id)
   db.isLoginRight(req.body, req.session_id)
     .then(data => {
-      console.log(data)
-      res.send(data.data)
+      console.log('DATA', data)
+      res.send(data)
     })
     .catch(err => res.sendStatus(500))
+})
+
+app.get('/logout', (req, res) => {
+  db.logout(req.session_id)
+    .then(data => res.send(201))
+    .catch(err => res.send(401))
 })
 
 app.post('/signup', (req, res) => {
@@ -54,6 +61,40 @@ app.post('/signup', (req, res) => {
   db.addUser(req.body, req.session_id)
     .then(data => res.send(data))
     .catch(err => res.send(err))
+})
+
+app.post('/users/:id/stocks', (req, res) => {
+  axios.get(`${process.env.API_URL}/quote?symbol=${req.body.symbol}&apikey=${process.env.API_KEY}`)
+    .then(stock => {
+      return db.addStock(stock.data, req.params.id, req.body.shares)
+    })
+    .then(user => {
+      res.send(user);
+    })
+    .catch(err => {
+      res.send(err);
+    })
+});
+
+app.post('/users/:id/crypto', (req, res) => {
+  axios.get(`${process.env.APICRYPTO_URL}/cryptocurrency/quotes/latest/`, {headers:{"X-CMC_PRO_API_KEY": process.env.APICRYPTO_KEY}})
+    .then(data => {
+      return db.addCrypto(data.data.data[req.body.symbol])
+    })
+    .then(user => res.send(user))
+    .catch(err => res.send(err))
+})
+
+app.delete('/users/:id/stocks/:symbol', (req, res) => {
+  db.deleteStock(req.params.id, req.params.symbol)
+    .then(user => res.send(user))
+    .catch(err => res.send(err));
+})
+
+app.put('/users/:id/stocks/:symbol/:newcount', (req, res) => {
+  db.editStock(req.params.id, req.params.symbol, req.params.newcount)
+    .then(user => res.send(user))
+    .catch(err => res.send(err));
 })
 
 app.listen(process.env.PORT, () => {
