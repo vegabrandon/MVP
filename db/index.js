@@ -178,7 +178,7 @@ db.editStock = (id, symbol, newShareCount) => {
         console.log('DOCCCC', doc)
         for (var i = 0; i < doc.stocks.length; i ++) {
           if (doc.stocks[i].symbol === symbol) {
-            doc.stocks.share_count = newShareCount;
+            doc.stocks[i].share_count = newShareCount;
             break;
           }
         }

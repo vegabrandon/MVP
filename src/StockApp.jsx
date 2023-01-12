@@ -2,11 +2,10 @@ import axios from 'axios';
 import { React, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import './StockApp.css';
+import {motion} from 'framer-motion';
 import StockList from './StockList.jsx'
 const StockApp = ({user, setUser}) => {
-  const [showModal, setShowModal] = useState(false)
-  const [symbol, setSymbol] = useState('')
-  const [shares, setShares] = useState('');
+
   const [showEditModal, setShowEditModal] = useState({});
   const [newShareCount, setNewShareCount] = useState(0);
 
@@ -23,10 +22,7 @@ const StockApp = ({user, setUser}) => {
       .catch(err => console.error('Error deleting', err))
   }
 
-  const handleSymbolSubmission = () => {
-    axios.post(`/users/${user._id}/stocks`, {symbol, shares})
-      .then(data => {setUser(data.data); setShowModal(false); });
-  }
+
 
   const openModal = (stockSymbol) => {
     setShowEditModal({
@@ -40,10 +36,10 @@ const StockApp = ({user, setUser}) => {
     for (var i = 0; i < user.stocks.length; i ++) {
       value += parseFloat(parseFloat(parseFloat(user.stocks[i].close) * parseFloat(user.stocks[i].share_count)).toFixed(2))
     }
-    return value;
+    return value.toFixed(2);
   }
 
-  var stylesShareModal = {
+  const stylesShareModal = {
     overlay: {
       position: "fixed",
       top: 0,
@@ -72,27 +68,10 @@ const StockApp = ({user, setUser}) => {
 
     }
   };
+
+
   return (
     <>
-      <Modal
-        isOpen={showModal}
-        onRequestClose={(e) => {setShowModal(false)}}
-        appElement={document.getElementById('App')}
-        style={stylesShareModal}
-      >
-        <h2>Add to your portfolio</h2>
-
-        <h4>Stock Symbol</h4>
-        <input className='form-control' type="text" onChange={e => setSymbol(e.target.value)}/>
-
-        <h4># of Shares</h4>
-        <input className='form-control' type="text" onChange={e => setShares(e.target.value)} />
-        <div className='flex-row'>
-          <button className='login-form-button' onClick={handleSymbolSubmission}>Submit</button>
-          <button className='login-form-button' onClick={() => {setShowModal(false)}}>Close</button>
-        </div>
-      </Modal>
-
       <Modal
         isOpen={showEditModal.show}
         onRequestClose={() => {setShowEditModal({})}}
@@ -107,16 +86,24 @@ const StockApp = ({user, setUser}) => {
           <button className='login-form-button' onClick={() => {setShowEditModal({})}}>Close</button>
         </div>
       </Modal>
-      <div className='flex-row'>
+      <div className='flex-col' style={{marginTop: '50px'}}>
+
         {console.log('USER CONSOLE LOGS', user)}
-        {user && user.stocks && user.stocks.length > 0 ? (<><h2 className='h2-val'>Portfolio Value: {portfolioValue()}</h2></>) : null}<button className='add-share-button' onClick={() => {setShowModal(true)}}>
-          Add a share
-        </button>
+        {user && user.stocks && user.stocks.length > 0 ? (<div><h2 className='h2-val display-2'>Portfolio Value: ${portfolioValue()}</h2><hr /></div>) : null}
+
+
+
       </div>
 
       {user.stocks.length > 0 ? (
-        <center><StockList openModal={openModal} handleRemoval={handleRemoval} stocks={user.stocks} /></center>
-      ) :(<h3 className='h3-add'>Add some stocks and see them here!</h3>)}
+        <>
+          <center>
+            <StockList openModal={openModal} handleRemoval={handleRemoval} stocks={user.stocks} />
+          </center>
+        </>
+      ) :(
+        <h3 className='h3-add'>Add some stocks and see them here!</h3>
+      )}
     </>
 
   );

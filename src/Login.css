@@ -1,8 +1,10 @@
 
 .login-button{
-  background-image: linear-gradient(to left, #2b1b1b, #3a1c1c, #491d1d, #571d1d, #661c1c);
+  outline: 1px solid rgba(255, 255, 255, 0.104);
+  transition: 0.25s;
   border-radius: 50px;
   border: none;
+  background: transparent;
   padding: 10px;
 
   color: white;
@@ -21,11 +23,19 @@
   100% {background-image: linear-gradient(to left, #815454, #996347, #9b7c36, #839b38, #3cb961);}
 } */
 .login-button:hover {
+  /* cursor: pointer;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.104);
+  color: white;
+  font-weight: bold; */
+
+}
+.login-button:focus {
   cursor: pointer;
-  outline: 1px solid rgba(255, 255, 255, 0.478);
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.104);
   color: white;
   font-weight: bold;
-
 }
 
 .login {
@@ -43,15 +53,19 @@
 }
 
 .login-form-button {
-  background-color: #661c1c;
+
   border-radius: 10px;
   padding: 10px;
   border: none;
   color: white;
   font-weight: bolder;
   margin-top: 30px;
+  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;
 
+  transition: 0.25s;
 }
 .login-form-button:hover {
   cursor: pointer;
+  outline: none;
+  /* background: transparent; */
 }

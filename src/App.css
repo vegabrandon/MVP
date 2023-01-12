@@ -2,29 +2,38 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000);
-  font-family: 'Nunito', sans-serif;
+  /* background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000); */
+  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;
 
 }
 h1 {
-  color:white;
+  /* background: #E76F51;
+  background: linear-gradient(to right, #E76F51 0%, #F4A261 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  color: white;
   text-align: center;
 
 }
 
+
 .logout-button {
-  background-color: #661c1c;
+  /* background-color: #B4F8C8; */
+  background-color: transparent;
   border-radius: 10px;
   padding: 10px;
   border: none;
-  color: white;
+  color: #B4F8C8;
   font-weight: bolder;
-  margin-left: 40px;
 
+  outline: 1px solid rgba(255, 255, 255, 0.104) !important;
+  transition: 0.25s;
 
 }
 .logout-button:hover {
   cursor: pointer;
+  outline: 0 !important;
+  background-color: rgba(255, 255, 255, 0.104);
 }
 .flex-row {
   display:flex;
@@ -51,4 +60,71 @@ h1 {
 
 .space-evenly {
   justify-content: space-evenly;
+}
+.top-left {
+  position: absolute;
+  left:0;
+  top:0;
+  color: white;
+}
+
+.menu-button {
+  background-color: transparent;
+  border-radius: 10px;
+  font-size: 30px;
+  border: none;
+  color: #B4F8C8;
+  font-weight: bolder;
+  position: absolute;
+  top:20px;
+  left: 20px;
+  transition: 0.25s;
+  z-index: 10;
+}
+
+.menu-div {
+  height:100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width:17vw;
+  max-width: 210px;
+  background-color: #114348;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.title {
+  position: absolute;
+  left: 70px;
+  z-index: 10;
+  top: 25px;
+  color: white;
+}
+
+.menu-div-item {
+  background-color: rgba(0, 0, 0, 0.223);
+  z-index: 9;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.avatar {
+  position: absolute;
+  top:20px;
+  color: white;
+  right: 20px;
+
+}
+
+.fa-user {
+  margin-right: 5px;
+}
+
+.avatar-text {
+  color: white;
+  margin-right: 9px;
+  font-size: 20px;
 }

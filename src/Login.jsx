@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import Modal from 'react-modal';
 import axios from 'axios';
+import {motion} from 'framer-motion'
 const Login = ({setUser}) => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -100,13 +101,34 @@ const Login = ({setUser}) => {
         <h4>Password</h4>
         <input className='form-control' type="text" onChange={e => setSignupPassword(e.target.value)} />
         <div className='flex-row'>
-          <button className='login-form-button' onClick={handleSignupSubmit}>Submit</button>
-          <button className='login-form-button' onClick={() => {setShowSignup(false)}}>Close</button>
+          <button className='stock-button login-form-button' onClick={handleSignupSubmit}>Submit</button>
+          <button className='stock-button login-form-button' onClick={() => {setShowSignup(false)}}>Close</button>
         </div>
       </Modal>
 
-        <button className='login-button btn' onClick={() => {setShowLogin(true)}}>Login</button>
-        <button className='login-button btn' onClick={() => {setShowSignup(true)}}>Signup</button>
+        <motion.button
+          className='login-button'
+          onClick={() => {setShowLogin(true)}}
+          // transition={{duration: 0.2}}
+          transition={{type: 'spring', delay: 1, duration: 2}}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          whileHover={{outline: 'none', cursor: 'pointer', backgroundColor: 'rgba(255, 255, 255, 0.104)', fontWeight: 'bolder'}}
+        >
+          Login
+        </motion.button>
+
+        <motion.button
+          className='login-button'
+          onClick={() => {setShowSignup(true)}}
+          // transition={{duration: 0.2}}
+          transition={{type: 'spring', delay: 1, duration: 2}}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          whileHover={{outline: 'none', cursor: 'pointer', backgroundColor: 'rgba(255, 255, 255, 0.104)', fontWeight: 'bolder'}}
+        >
+          Signup
+        </motion.button>
 
     </div>
 
