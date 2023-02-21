@@ -78,7 +78,7 @@ const Login = ({setUser}) => {
         <h4>Username</h4>
         <input className='form-control' type="text" onChange={e => setLoginUsername(e.target.value)}/>
         <h4>Password</h4>
-        <input className='form-control' type="text" onChange={e => setLoginPassword(e.target.value)} />
+        <input className='form-control' type="password" onChange={e => setLoginPassword(e.target.value)} />
         {showError ? (<small className='form-text text-danger'>
           Login information incorrect.
         </small>) : null}
@@ -99,7 +99,7 @@ const Login = ({setUser}) => {
         <h4>Username</h4>
         <input className='form-control' type="text" onChange={e => setSignupUsername(e.target.value)}/>
         <h4>Password</h4>
-        <input className='form-control' type="text" onChange={e => setSignupPassword(e.target.value)} />
+        <input className='form-control' type="password" onChange={e => setSignupPassword(e.target.value)} />
         <div className='flex-row'>
           <button className='stock-button login-form-button' onClick={handleSignupSubmit}>Submit</button>
           <button className='stock-button login-form-button' onClick={() => {setShowSignup(false)}}>Close</button>

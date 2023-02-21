@@ -77,12 +77,18 @@ app.post('/users/:id/stocks', (req, res) => {
 });
 
 app.post('/users/:id/crypto', (req, res) => {
-  axios.get(`${process.env.APICRYPTO_URL}/cryptocurrency/quotes/latest/`, {headers:{"X-CMC_PRO_API_KEY": process.env.APICRYPTO_KEY}})
+  axios.get(`${process.env.APICRYPTO_URL}/cryptocurrency/quotes/latest?symbol=${req.body.symbol}`, {headers:{"X-CMC_PRO_API_KEY": process.env.APICRYPTO_KEY}})
     .then(data => {
-      return db.addCrypto(data.data.data[req.body.symbol])
+      console.log('API BACK', data.data.data[req.body.symbol][0])
+      return db.addCrypto(data.data.data[req.body.symbol][0], req.params.id, req.body.shares)
     })
     .then(user => res.send(user))
     .catch(err => res.send(err))
+})
+
+app.post('/tester', (req, res) => {
+  console.log(req.body.e)
+  res.send(200)
 })
 
 app.delete('/users/:id/stocks/:symbol', (req, res) => {
@@ -96,6 +102,26 @@ app.put('/users/:id/stocks/:symbol/:newcount', (req, res) => {
     .then(user => res.send(user))
     .catch(err => res.send(err));
 })
+
+app.delete('/users/:id/crypto/:symbol', (req, res) => {
+  db.deleteCrypto(req.params.id, req.params.symbol)
+    .then(user => {console.log('USERRRR', user);res.send(user)})
+    .catch(err => {console.log('ERRR', err); res.send(err)});
+})
+
+app.put('/users/:id/crypto/:symbol/:newcount', (req, res) => {
+  db.editCrypto(req.params.id, req.params.symbol, req.params.newcount)
+    .then(user => res.send(user))
+    .catch(err => res.send(err));
+})
+
+app.post(`/users/:id/lists/new`, (req, res) => {
+  console.log('LOOKING FOR TIMESTAMPS', req.body.timestamps)
+  db.addList(req.params.id, req.body.timestamps, req.body.name)
+    .then(user => res.send(user))
+    .catch(err => res.send(err))
+})
+
 
 app.listen(process.env.PORT, () => {
   console.log('Listening on port', process.env.PORT);

@@ -24,19 +24,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _App_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.css */ "./src/App.css");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _StockApp_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StockApp.jsx */ "./src/StockApp.jsx");
 /* harmony import */ var _Login_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Login.jsx */ "./src/Login.jsx");
 /* harmony import */ var _CryptoApp_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CryptoApp.jsx */ "./src/CryptoApp.jsx");
-/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
 /* harmony import */ var _HamburgerMenu_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./HamburgerMenu.jsx */ "./src/HamburgerMenu.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _CustomList_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CustomList.jsx */ "./src/CustomList.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -70,29 +72,45 @@ function App() {
     showEditModal = _useState10[0],
     setShowEditModal = _useState10[1];
   var handleLogout = function handleLogout() {
-    axios__WEBPACK_IMPORTED_MODULE_7__["default"].get('/logout').then(function (data) {
+    axios__WEBPACK_IMPORTED_MODULE_8__["default"].get('/logout').then(function (data) {
       setUser({});
     });
   };
+  var returnCustomList = function returnCustomList(str) {
+    for (var i = 0; i < user.lists.length; i++) {
+      if (user.lists[i].name === str) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CustomList_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          list: user.lists[i].list,
+          name: user.lists[i].name,
+          user: user,
+          setUser: setUser
+        });
+      }
+    }
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    axios__WEBPACK_IMPORTED_MODULE_7__["default"].get('http://localhost:3001/session').then(function (data) {
+    axios__WEBPACK_IMPORTED_MODULE_8__["default"].get('http://localhost:3001/session').then(function (data) {
       if (data.data.length !== 0) {
         setUser(data.data);
       }
       setChecked(true);
     });
   }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {}, [user]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (currentApp !== 'Stock' && currentApp !== 'Crypto' && currentApp.length > 0) {
+      setCurrentApp(currentApp);
+    }
+  }, [user]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
     className: "App",
     id: "App",
-    children: checked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: checked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
       children: Object.keys(user).length === 0 ?
       /*#__PURE__*/
       // IS NOT LOGGED IN
-      (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "home-log-in",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_8__.motion.h1, {
+        children: [console.log('USER', user), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_9__.motion.h1, {
           transition: {
             type: 'spring',
             delay: 1,
@@ -105,37 +123,37 @@ function App() {
             opacity: 1
           },
           children: "Welcome!"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Login_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Login_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
           setUser: setUser
         })]
       }) :
       /*#__PURE__*/
       // IS LOGGED IN
-      (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "menu",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
             onClick: function onClick() {
               setMenuOpen(!menuOpen);
             },
             className: "menu-button",
-            children: menuOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+            children: menuOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
               class: "fa-solid fa-xmark"
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
               class: "fa-solid fa-bars"
             })
-          }), menuOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_HamburgerMenu_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          }), menuOpen ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_HamburgerMenu_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
             user: user,
             setUser: setUser,
             setCurrentApp: setCurrentApp,
             currentApp: currentApp
           }) : null]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           className: "home-log-in flex-col",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-            className: "flex-row center",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            className: "flex-col center",
             id: "logged-in",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_8__.motion.h1, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_9__.motion.h1, {
               transition: {
                 type: 'spring',
                 stiffness: 500,
@@ -154,26 +172,29 @@ function App() {
                 x: 0
               },
               children: "Welcome!"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               className: "avatar",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                 class: "fa-solid fa-user"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
                 className: "avatar-text",
                 children: user.user
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
                 className: "logout-button",
                 onClick: handleLogout,
                 children: "Logout"
               })]
             })]
-          }), currentApp === 'Stock' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_StockApp_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          }), currentApp === 'Stock' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_StockApp_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
               user: user,
               setUser: setUser,
               setCurrentApp: setCurrentApp
             })
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_CryptoApp_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {})]
+          }) : currentApp === 'Crypto' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_CryptoApp_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+            user: user,
+            setUser: setUser
+          }) : currentApp.length > 0 ? returnCustomList(currentApp) : null]
         })]
       })
     }) : null
@@ -195,38 +216,140 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js");
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _CryptoList_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CryptoList.jsx */ "./src/CryptoList.jsx");
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
 
 
-var CryptoApp = function CryptoApp() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
+
+
+
+var CryptoApp = function CryptoApp(_ref) {
+  var user = _ref.user,
+    setUser = _ref.setUser;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    showEditModal = _useState2[0],
+    setShowEditModal = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState4 = _slicedToArray(_useState3, 2),
+    newShareCount = _useState4[0],
+    setNewShareCount = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    showCryptoModal = _useState6[0],
+    setShowCryptoModal = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState8 = _slicedToArray(_useState7, 2),
+    cryptoSymbol = _useState8[0],
+    setCryptoSymbol = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    cryptoAmount = _useState10[0],
+    setCryptoAmount = _useState10[1];
+  var portfolioValue = function portfolioValue() {
+    var value = 0;
+    for (var i = 0; i < user.crypto.length; i++) {
+      value += parseFloat(parseFloat(parseFloat(user.crypto[i].quote.USD.price) * parseFloat(user.crypto[i].share_count)).toFixed(2));
+    }
+    return value.toFixed(2);
+  };
+  var stylesShareModal = {
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(255, 255, 255, 0.1)"
+    },
+    content: {
+      position: "absolute",
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-evenly',
+      borderRadius: '20px',
+      margin: "auto",
+      width: "70vw",
+      maxWidth: '480px',
+      bottom: "45vh",
+      border: "1px solid #ccc",
+      background: "#fff",
+      overflow: "auto",
+      WebkitOverflowScrolling: "touch",
+      outline: "none",
+      padding: "20px"
+    }
+  };
+  var openModal = function openModal(cryptoSymbol) {
+    setShowEditModal({
+      show: true,
+      symbol: cryptoSymbol
+    });
+  };
+  var handleRemoval = function handleRemoval(symbol) {
+    axios__WEBPACK_IMPORTED_MODULE_4__["default"]["delete"]("/users/".concat(user._id, "/crypto/").concat(symbol)).then(function (user) {
+      setUser(user.data);
+      setShowEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var handleEdit = function handleEdit() {
+    axios__WEBPACK_IMPORTED_MODULE_4__["default"].put("/users/".concat(user._id, "/crypto/").concat(showEditModal.symbol, "/").concat(newShareCount)).then(function (user) {
+      setUser(user.data);
+      setShowEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var handleCryptoSubmission = function handleCryptoSubmission() {
+    axios__WEBPACK_IMPORTED_MODULE_4__["default"].post("/users/".concat(user._id, "/crypto"), {
+      symbol: cryptoSymbol,
+      shares: cryptoAmount
+    }).then(function (data) {
+      setUser(data.data);
+      setShowCryptoModal(false);
+    }).catch(function (err) {
+      return console.error(err);
+    });
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
       isOpen: showEditModal.show,
       onRequestClose: function onRequestClose() {
         setShowEditModal({});
       },
       style: stylesShareModal,
       appElement: document.getElementById('App'),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h2", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("h2", {
         children: ["Edit Amount of Shares for the Symbol: ", showEditModal.symbol]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h4", {
         children: "New Share Count"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
         className: "form-control",
         type: "text",
         onChange: function onChange(e) {
           return setNewShareCount(e.target.value);
         }
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "flex-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
           className: "login-form-button",
           onClick: handleEdit,
           children: "Submit"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
           className: "login-form-button",
           onClick: function onClick() {
             setShowEditModal({});
@@ -234,28 +357,80 @@ var CryptoApp = function CryptoApp() {
           children: "Close"
         })]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
+      isOpen: showCryptoModal,
+      onRequestClose: function onRequestClose(e) {
+        setShowCryptoModal(false);
+      },
+      appElement: document.getElementById('App'),
+      style: stylesShareModal,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        children: "Add to your crypto portfolio"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h4", {
+        children: "Crypto Symbol"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setCryptoSymbol(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h4", {
+        children: "# of Shares"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setCryptoAmount(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "flex-row",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          className: "login-form-button",
+          onClick: handleCryptoSubmission,
+          children: "Submit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          className: "login-form-button",
+          onClick: function onClick() {
+            setShowCryptoModal(false);
+          },
+          children: "Close"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_5__.motion.button, {
+      transition: {
+        duration: 0.25
+      },
+      className: "add-share-button",
+      whileHover: {
+        backgroundColor: 'rgba(255, 255, 255, 0.104)',
+        outline: 'none'
+      },
+      onClick: function onClick() {
+        setShowCryptoModal(true);
+      },
+      children: "Add to portfolio"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "flex-col",
       style: {
         marginTop: '50px'
       },
-      children: [console.log('USER CONSOLE LOGS', user), user && user.stocks && user.stocks.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h2", {
+      children: user && user.crypto && user.crypto.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("h2", {
           className: "h2-val display-2",
           children: ["Portfolio Value: $", portfolioValue()]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("hr", {})]
-      }) : null]
-    }), user.stocks.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("center", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(StockList, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {})]
+      }) : null
+    }), user.crypto.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("center", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CryptoList_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
           openModal: openModal,
           handleRemoval: handleRemoval,
-          stocks: user.stocks
+          cryptos: user.crypto
         })
       })
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
       className: "h3-add",
-      children: "Add some stocks and see them here!"
+      children: "Add some crypto and see them here!"
     })]
   });
 };
@@ -263,10 +438,160 @@ var CryptoApp = function CryptoApp() {
 
 /***/ }),
 
-/***/ "./src/HamburgerMenu.jsx":
-/*!*******************************!*\
-  !*** ./src/HamburgerMenu.jsx ***!
-  \*******************************/
+/***/ "./src/CryptoList.jsx":
+/*!****************************!*\
+  !*** ./src/CryptoList.jsx ***!
+  \****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var CryptoList = function CryptoList(_ref) {
+  var cryptos = _ref.cryptos,
+    handleRemoval = _ref.handleRemoval,
+    openModal = _ref.openModal;
+  console.log('');
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    className: "flex-row",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "stock flex-row space-evenly",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col space-evenly",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "Ticker"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "stock-ticker",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h1", {
+              className: "stock-symbol",
+              children: crypto.symbol
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+              children: crypto.name
+            })]
+          });
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col space-evenly",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "Price"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "stock-close flex-col center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("h3", {
+              children: ["$", parseFloat(crypto.quote['USD'].price).toFixed(2)]
+            })
+          });
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "% Daily"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "stock-daily flex-col center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("h3", {
+              children: [parseFloat(crypto.quote['USD'].percent_change_24h).toFixed(2), "%"]
+            })
+          });
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "Amount"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "stock-val flex-col center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+              children: crypto.share_count
+            })
+          });
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "Value"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "stock-daily flex-col center",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("h3", {
+              children: ["$", parseFloat(parseFloat(crypto.quote['USD'].price) * parseFloat(crypto.share_count)).toFixed(2)]
+            })
+          });
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "flex-col",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+            className: "stock-button",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+              class: "fa-solid fa-rotate-right"
+            })
+          })
+        }), cryptos.map(function (crypto) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            className: "flex-col space-evenly stock-buttons",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_2__.motion.button, {
+              className: "stock-button",
+              onClick: function onClick() {
+                openModal(crypto.symbol);
+              },
+              transition: {
+                duration: 0.25
+              },
+              whileHover: {
+                backgroundColor: 'rgba(255, 255, 255, 0.104)',
+                outline: 'none'
+              },
+              children: "Edit"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_2__.motion.button, {
+              className: "stock-button",
+              onClick: function onClick() {
+                handleRemoval(crypto.symbol);
+              },
+              children: "Remove"
+            })]
+          });
+        })]
+      })]
+    })
+  });
+};
+/* harmony default export */ __webpack_exports__["default"] = (CryptoList);
+
+/***/ }),
+
+/***/ "./src/CustomList.jsx":
+/*!****************************!*\
+  !*** ./src/CustomList.jsx ***!
+  \****************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -291,6 +616,410 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var CustomList = function CustomList(_ref) {
+  var list = _ref.list,
+    user = _ref.user,
+    setUser = _ref.setUser,
+    name = _ref.name;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    showCryptoEditModal = _useState2[0],
+    setShowCryptoEditModal = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+    _useState4 = _slicedToArray(_useState3, 2),
+    showStockEditModal = _useState4[0],
+    setShowStockEditModal = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState6 = _slicedToArray(_useState5, 2),
+    newStockShareCount = _useState6[0],
+    setNewStockShareCount = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState8 = _slicedToArray(_useState7, 2),
+    newCryptoShareCount = _useState8[0],
+    setNewCryptoShareCount = _useState8[1];
+  var stylesShareModal = {
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(255, 255, 255, 0.1)"
+    },
+    content: {
+      position: "absolute",
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-evenly',
+      borderRadius: '20px',
+      margin: "auto",
+      width: "70vw",
+      maxWidth: '480px',
+      bottom: "45vh",
+      border: "1px solid #ccc",
+      background: "#fff",
+      overflow: "auto",
+      WebkitOverflowScrolling: "touch",
+      outline: "none",
+      padding: "20px"
+    }
+  };
+  var handleCryptoEdit = function handleCryptoEdit() {
+    axios__WEBPACK_IMPORTED_MODULE_3__["default"].put("/users/".concat(user._id, "/crypto/").concat(showCryptoEditModal.symbol, "/").concat(newCryptoShareCount)).then(function (user) {
+      setUser(user.data);
+      setShowCryptoEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var handleStockEdit = function handleStockEdit() {
+    axios__WEBPACK_IMPORTED_MODULE_3__["default"].put("/users/".concat(user._id, "/stocks/").concat(showStockEditModal.symbol, "/").concat(newStockShareCount)).then(function (user) {
+      setUser(user.data);
+      setShowStockEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var handleStockRemoval = function handleStockRemoval(symbol) {
+    axios__WEBPACK_IMPORTED_MODULE_3__["default"]["delete"]("/users/".concat(user._id, "/stocks/").concat(symbol)).then(function (user) {
+      setUser(user.data);
+      setShowStockEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var handleCryptoRemoval = function handleCryptoRemoval(symbol) {
+    axios__WEBPACK_IMPORTED_MODULE_3__["default"]["delete"]("/users/".concat(user._id, "/crypto/").concat(symbol)).then(function (user) {
+      setUser(user.data);
+      setShowCryptoEditModal({});
+    }).catch(function (err) {
+      return console.error('Error deleting', err);
+    });
+  };
+  var portfolioValue = function portfolioValue() {
+    var value = 0;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id !== undefined) {
+        value += parseFloat(parseFloat(parseFloat(list[i].quote.USD.price) * parseFloat(list[i].share_count)).toFixed(2));
+      } else {
+        value += parseFloat(parseFloat(parseFloat(list[i].close) * parseFloat(list[i].share_count)).toFixed(2));
+      }
+    }
+    return value.toFixed(2);
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
+      isOpen: showStockEditModal.show,
+      onRequestClose: function onRequestClose() {
+        setShowStockEditModal({});
+      },
+      style: stylesShareModal,
+      appElement: document.getElementById('App'),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h2", {
+        children: ["Edit Amount of Shares for the Symbol: ", showStockEditModal.symbol]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+        children: "New Share Count"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setNewStockShareCount(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex-row",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: "login-form-button",
+          onClick: handleStockEdit,
+          children: "Submit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: "login-form-button",
+          onClick: function onClick() {
+            setShowStockEditModal({});
+          },
+          children: "Close"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
+      isOpen: showCryptoEditModal.show,
+      onRequestClose: function onRequestClose() {
+        setShowCryptoEditModal({});
+      },
+      style: stylesShareModal,
+      appElement: document.getElementById('App'),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h2", {
+        children: ["Edit Amount of Shares for the Symbol: ", showCryptoEditModal.symbol]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+        children: "New Share Count"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setNewCryptoShareCount(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex-row",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: "login-form-button",
+          onClick: handleCryptoEdit,
+          children: "Submit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: "login-form-button",
+          onClick: function onClick() {
+            setShowCryptoEditModal({});
+          },
+          children: "Close"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.button, {
+      transition: {
+        duration: 0.25
+      },
+      className: "add-share-button",
+      whileHover: {
+        backgroundColor: 'rgba(255, 255, 255, 0.104)',
+        outline: 'none'
+      },
+      onClick: function onClick() {},
+      children: "Add to list"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "flex-col",
+      style: {
+        marginTop: '50px'
+      },
+      children: Array.isArray(list) && list.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h2", {
+          className: "h2-val display-2",
+          children: [name, " Value: $", portfolioValue()]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("hr", {})]
+      }) : null
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "flex-row",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "stock flex-row space-evenly",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col space-evenly",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                children: "Ticker"
+              })
+            })
+          }), list.map(function (item) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "stock-ticker",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+                className: "stock-symbol",
+                children: item.symbol
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+                children: item.name
+              })]
+            });
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col space-evenly",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                children: "Price"
+              })
+            })
+          }), list.map(function (item) {
+            if (item.id === undefined) {
+              //STOCK FORMATTING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-close flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: ["$", parseFloat(item.close).toFixed(2)]
+                })
+              });
+            } else {
+              //CRYPTO FORMATTING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-close flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: ["$", parseFloat(item.quote['USD'].price).toFixed(2)]
+                })
+              });
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                children: "% Daily"
+              })
+            })
+          }), list.map(function (item) {
+            if (item.id === undefined) {
+              // STOCK FORMATTING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-daily flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: [parseFloat(item.percent_change).toFixed(2), "%"]
+                })
+              });
+            } else {
+              // CRYPTO FORMATTING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-daily flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: [parseFloat(item.quote['USD'].percent_change_24h).toFixed(2), "%"]
+                })
+              });
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                children: "Amount"
+              })
+            })
+          }), list.map(function (item) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "stock-val flex-col center",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+                children: item.share_count
+              })
+            });
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                children: "Value"
+              })
+            })
+          }), list.map(function (item) {
+            if (item.id === undefined) {
+              // STOCK FORMATIING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-daily flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: ["$", parseFloat(parseFloat(item.close) * parseFloat(item.share_count)).toFixed(2)]
+                })
+              });
+            } else {
+              // CRYPTO FORMATTING
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "stock-daily flex-col center",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+                  children: ["$", parseFloat(parseFloat(item.quote['USD'].price) * parseFloat(item.share_count)).toFixed(2)]
+                })
+              });
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+              className: "stock-button",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
+                class: "fa-solid fa-rotate-right"
+              })
+            })
+          }), list.map(function (item) {
+            if (item.id === undefined) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                className: "flex-col space-evenly stock-buttons",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.button, {
+                  className: "stock-button",
+                  onClick: function onClick() {
+                    setShowStockEditModal({
+                      symbol: item.symbol,
+                      show: true
+                    });
+                  },
+                  transition: {
+                    duration: 0.25
+                  },
+                  whileHover: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.104)',
+                    outline: 'none'
+                  },
+                  children: "Edit"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.button, {
+                  className: "stock-button",
+                  onClick: function onClick() {
+                    handleStockRemoval(item.symbol);
+                  },
+                  children: "Remove"
+                })]
+              });
+            } else {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                className: "flex-col space-evenly stock-buttons",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.button, {
+                  className: "stock-button",
+                  onClick: function onClick() {
+                    setShowCryptoEditModal({
+                      symbol: item.symbol,
+                      show: true
+                    });
+                  },
+                  transition: {
+                    duration: 0.25
+                  },
+                  whileHover: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.104)',
+                    outline: 'none'
+                  },
+                  children: "Edit"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.button, {
+                  className: "stock-button",
+                  onClick: function onClick() {
+                    handleCryptoRemoval(item.symbol);
+                  },
+                  children: "Remove"
+                })]
+              });
+            }
+          })]
+        })]
+      })
+    })]
+  });
+};
+/* harmony default export */ __webpack_exports__["default"] = (CustomList);
+
+/***/ }),
+
+/***/ "./src/HamburgerMenu.jsx":
+/*!*******************************!*\
+  !*** ./src/HamburgerMenu.jsx ***!
+  \*******************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js");
+/* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
 var HamburgerMenu = function HamburgerMenu(_ref) {
   var currentApp = _ref.currentApp,
     setCurrentApp = _ref.setCurrentApp,
@@ -298,25 +1027,16 @@ var HamburgerMenu = function HamburgerMenu(_ref) {
     setUser = _ref.setUser;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
-    showModal = _useState2[0],
-    setShowModal = _useState2[1];
+    showListModal = _useState2[0],
+    setShowListModal = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState4 = _slicedToArray(_useState3, 2),
-    symbol = _useState4[0],
-    setSymbol = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    newListName = _useState4[0],
+    setNewListName = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    shares = _useState6[0],
-    setShares = _useState6[1];
-  var handleSymbolSubmission = function handleSymbolSubmission() {
-    axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("/users/".concat(user._id, "/stocks"), {
-      symbol: symbol,
-      shares: shares
-    }).then(function (data) {
-      setUser(data.data);
-      setShowModal(false);
-    });
-  };
+    portfolioList = _useState6[0],
+    setPortfolioList = _useState6[1];
   var stylesShareModal = {
     overlay: {
       position: "fixed",
@@ -346,6 +1066,36 @@ var HamburgerMenu = function HamburgerMenu(_ref) {
       padding: "20px"
     }
   };
+  var removeTimestamp = function removeTimestamp(ts) {
+    var copiedList = JSON.parse(JSON.stringify(portfolioList));
+    for (var i = 0; i < copiedList.length; i++) {
+      if (copiedList[i] === ts) {
+        copiedList.splice(i, 1);
+        break;
+      }
+    }
+    return copiedList;
+  };
+  var handleOnChangeCheck = function handleOnChangeCheck(e) {
+    var timestamp = e.target.id;
+    if (e.target.checked) {
+      setPortfolioList([].concat(_toConsumableArray(portfolioList), [e.target.id]));
+    } else {
+      setPortfolioList(removeTimestamp(timestamp));
+    }
+  };
+  var handleListSubmission = function handleListSubmission(e) {
+    e.preventDefault();
+    axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("/users/".concat(user._id, "/lists/new"), {
+      name: newListName,
+      timestamps: portfolioList
+    }).then(function (user) {
+      setUser(user.data);
+      setShowListModal(false);
+      setNewListName('');
+      setPortfolioList([]);
+    });
+  };
   var whileHover = {
     outline: 'none',
     cursor: 'pointer',
@@ -353,47 +1103,81 @@ var HamburgerMenu = function HamburgerMenu(_ref) {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
-      isOpen: showModal,
-      onRequestClose: function onRequestClose(e) {
-        setShowModal(false);
-      },
-      appElement: document.getElementById('App'),
+      isOpen: showListModal,
       style: stylesShareModal,
+      appElement: document.getElementById('App'),
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-        children: "Add to your portfolio"
+        children: "Add a New List"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
-        children: "Stock Symbol"
+        children: "New List Name"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
         className: "form-control",
         type: "text",
         onChange: function onChange(e) {
-          return setSymbol(e.target.value);
+          return setNewListName(e.target.value);
         }
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
-        children: "# of Shares"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-        className: "form-control",
-        type: "text",
-        onChange: function onChange(e) {
-          return setShares(e.target.value);
-        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "flex-row space-evenly",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+              children: "Crypto:"
+            })
+          }), user.crypto.map(function (cryp) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "flex-row",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                type: "checkbox",
+                id: cryp.timestamp,
+                name: cryp.timestamp,
+                value: cryp.timestamp,
+                onChange: handleOnChangeCheck
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("label", {
+                htmlFor: cryp.timestamp,
+                children: ["\xA0", cryp.symbol, " - $", parseFloat(parseFloat(cryp.quote['USD'].price) * parseFloat(cryp.share_count)).toFixed(2)]
+              })]
+            });
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "flex-col",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+              children: "Stocks:"
+            })
+          }), user.stocks.map(function (stock) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "flex-row",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                type: "checkbox",
+                id: stock.timestamp,
+                name: stock.timestamp,
+                value: stock.timestamp,
+                onChange: handleOnChangeCheck
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("label", {
+                htmlFor: stock.timestamp,
+                children: ["\xA0", stock.symbol, " - $", parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)]
+              })]
+            });
+          })]
+        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "flex-row",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
           className: "login-form-button",
-          onClick: handleSymbolSubmission,
+          onClick: handleListSubmission,
           children: "Submit"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
           className: "login-form-button",
           onClick: function onClick() {
-            setShowModal(false);
+            setShowListModal(false);
           },
           children: "Close"
         })]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
       transition: {
-        duration: 1
+        duration: 0.5
       },
       initial: {
         x: -1000
@@ -402,31 +1186,57 @@ var HamburgerMenu = function HamburgerMenu(_ref) {
         x: 0
       },
       className: "menu-div",
-      children: currentApp === 'Stock' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
-          className: "menu-div-item",
-          style: {
-            marginTop: '70px'
-          },
-          transition: {
-            duration: 0.25
-          },
-          whileHover: whileHover
-          // onClick={handleAddList}
-          ,
-          children: "Add portfolio list."
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
-          className: "menu-div-item",
-          transition: {
-            duration: 0.25
-          },
-          whileHover: whileHover,
-          onClick: function onClick() {
-            setCurrentApp('Crypto');
-          },
-          children: "Switch to Crypto Portfolio"
-        })]
-      }) : null
+      children: [currentApp === 'Stock' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "menu-div-item-selected",
+        children: "Stock Portfolio"
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
+        className: "menu-div-item",
+        whileHover: whileHover,
+        onClick: function onClick() {
+          setCurrentApp('Stock');
+        },
+        children: "Stock Portfolio"
+      }), currentApp === 'Crypto' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "menu-div-item-selected",
+        children: "Crypto Portfolio"
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
+        className: "menu-div-item",
+        onClick: function onClick() {
+          setCurrentApp('Crypto');
+        },
+        whileHover: whileHover,
+        children: "Crypto Portfolio"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
+        className: "menu-div-item",
+        transition: {
+          duration: 0.25
+        },
+        whileHover: whileHover,
+        onClick: function onClick(e) {
+          return setShowListModal(true);
+        },
+        children: "Add Portfolio List"
+      }), user && user.lists && user.lists.length > 0 ? user.lists.map(function (obj) {
+        console.log('TRUEEEEE');
+        if (currentApp === obj.name) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            className: "menu-div-item-selected",
+            children: obj.name
+          });
+        } else {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_4__.motion.div, {
+            className: "menu-div-item",
+            transition: {
+              duration: 0.25
+            },
+            whileHover: whileHover,
+            onClick: function onClick() {
+              setCurrentApp(obj.name);
+            },
+            children: obj.name
+          });
+        }
+      }) : console.log('FALSEEEEE')]
     })]
   });
 };
@@ -565,7 +1375,7 @@ var Login = function Login(_ref) {
         children: "Password"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
         className: "form-control",
-        type: "text",
+        type: "password",
         onChange: function onChange(e) {
           return setLoginPassword(e.target.value);
         }
@@ -607,7 +1417,7 @@ var Login = function Login(_ref) {
         children: "Password"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
         className: "form-control",
-        type: "text",
+        type: "password",
         onChange: function onChange(e) {
           return setSignupPassword(e.target.value);
         }
@@ -697,6 +1507,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _StockApp_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StockApp.css */ "./src/StockApp.css");
 /* harmony import */ var _StockList_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./StockList.jsx */ "./src/StockList.jsx");
+/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! framer-motion */ "./node_modules/framer-motion/dist/es/render/dom/motion.mjs");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -716,20 +1527,41 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var StockApp = function StockApp(_ref) {
   var user = _ref.user,
     setUser = _ref.setUser;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
-    showEditModal = _useState2[0],
-    setShowEditModal = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    symbol = _useState2[0],
+    setSymbol = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState4 = _slicedToArray(_useState3, 2),
-    newShareCount = _useState4[0],
-    setNewShareCount = _useState4[1];
+    shares = _useState4[0],
+    setShares = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    showModal = _useState6[0],
+    setShowModal = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+    _useState8 = _slicedToArray(_useState7, 2),
+    showEditModal = _useState8[0],
+    setShowEditModal = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState10 = _slicedToArray(_useState9, 2),
+    newShareCount = _useState10[0],
+    setNewShareCount = _useState10[1];
   var handleRemoval = function handleRemoval(symbol) {
     axios__WEBPACK_IMPORTED_MODULE_5__["default"]["delete"]("/users/".concat(user._id, "/stocks/").concat(symbol)).then(function (user) {
       setUser(user.data);
       setShowEditModal({});
     }).catch(function (err) {
       return console.error('Error deleting', err);
+    });
+  };
+  var handleSymbolSubmission = function handleSymbolSubmission() {
+    axios__WEBPACK_IMPORTED_MODULE_5__["default"].post("/users/".concat(user._id, "/stocks"), {
+      symbol: symbol,
+      shares: shares
+    }).then(function (data) {
+      setUser(data.data);
+      setShowModal(false);
     });
   };
   var handleEdit = function handleEdit() {
@@ -813,6 +1645,58 @@ var StockApp = function StockApp(_ref) {
           children: "Close"
         })]
       })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)((react_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
+      isOpen: showModal,
+      onRequestClose: function onRequestClose(e) {
+        setShowModal(false);
+      },
+      appElement: document.getElementById('App'),
+      style: stylesShareModal,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+        children: "Add to your portfolio"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
+        children: "Stock Symbol"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setSymbol(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
+        children: "# of Shares"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+        className: "form-control",
+        type: "text",
+        onChange: function onChange(e) {
+          return setShares(e.target.value);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "flex-row",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          className: "login-form-button",
+          onClick: handleSymbolSubmission,
+          children: "Submit"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          className: "login-form-button",
+          onClick: function onClick() {
+            setShowModal(false);
+          },
+          children: "Close"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(framer_motion__WEBPACK_IMPORTED_MODULE_6__.motion.button, {
+      transition: {
+        duration: 0.25
+      },
+      className: "add-share-button",
+      whileHover: {
+        backgroundColor: 'rgba(255, 255, 255, 0.104)',
+        outline: 'none'
+      },
+      onClick: function onClick() {
+        setShowModal(true);
+      },
+      children: "Add to portfolio"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "flex-col",
       style: {
@@ -946,8 +1830,8 @@ var StockList = function StockList(_ref) {
         }), stocks.map(function (stock) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             className: "stock-daily flex-col center",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
-              children: parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+              children: ["$", parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)]
             })
           });
         })]
@@ -1010,7 +1894,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  height: 100vh;\n  width: 100vw;\n  overflow: hidden;\n  /* background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000); */\n  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;\n\n}\nh1 {\n  /* background: #E76F51;\n  background: linear-gradient(to right, #E76F51 0%, #F4A261 100%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent; */\n  color: white;\n  text-align: center;\n\n}\n\n\n.logout-button {\n  /* background-color: #B4F8C8; */\n  background-color: transparent;\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n\n  outline: 1px solid rgba(255, 255, 255, 0.104) !important;\n  transition: 0.25s;\n\n}\n.logout-button:hover {\n  cursor: pointer;\n  outline: 0 !important;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.flex-row {\n  display:flex;\n  width: 100%;\n}\n\n.center{\n  justify-content: center;\n}\n\n.home-log-in {\n  display:inline-block;\n  margin-top: 100px;\n  width: 100vw;\n  text-align: center;\n}\n#logged-in{\n  justify-content: center;\n}\n.flex-col {\n  display: flex;\n  flex-direction: column;\n}\n\n.space-evenly {\n  justify-content: space-evenly;\n}\n.top-left {\n  position: absolute;\n  left:0;\n  top:0;\n  color: white;\n}\n\n.menu-button {\n  background-color: transparent;\n  border-radius: 10px;\n  font-size: 30px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n  position: absolute;\n  top:20px;\n  left: 20px;\n  transition: 0.25s;\n  z-index: 10;\n}\n\n.menu-div {\n  height:100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width:17vw;\n  max-width: 210px;\n  background-color: #114348;\n  z-index: 8;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.title {\n  position: absolute;\n  left: 70px;\n  z-index: 10;\n  top: 25px;\n  color: white;\n}\n\n.menu-div-item {\n  background-color: rgba(0, 0, 0, 0.223);\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n}\n\n.avatar {\n  position: absolute;\n  top:20px;\n  color: white;\n  right: 20px;\n\n}\n\n.fa-user {\n  margin-right: 5px;\n}\n\n.avatar-text {\n  color: white;\n  margin-right: 9px;\n  font-size: 20px;\n}", "",{"version":3,"sources":["webpack://./src/App.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;EAChB,oGAAoG;EACpG,8FAA8F,GAAG,iCAAiC;;AAEpI;AACA;EACE;;;yCAGuC;EACvC,YAAY;EACZ,kBAAkB;;AAEpB;;;AAGA;EACE,+BAA+B;EAC/B,6BAA6B;EAC7B,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,cAAc;EACd,mBAAmB;;EAEnB,wDAAwD;EACxD,iBAAiB;;AAEnB;AACA;EACE,eAAe;EACf,qBAAqB;EACrB,4CAA4C;AAC9C;AACA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,uBAAuB;AACzB;;AAEA;EACE,oBAAoB;EACpB,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;AACpB;AACA;EACE,uBAAuB;AACzB;AACA;EACE,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,6BAA6B;AAC/B;AACA;EACE,kBAAkB;EAClB,MAAM;EACN,KAAK;EACL,YAAY;AACd;;AAEA;EACE,6BAA6B;EAC7B,mBAAmB;EACnB,eAAe;EACf,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,kBAAkB;EAClB,QAAQ;EACR,UAAU;EACV,iBAAiB;EACjB,WAAW;AACb;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,OAAO;EACP,MAAM;EACN,UAAU;EACV,gBAAgB;EAChB,yBAAyB;EACzB,UAAU;EACV,aAAa;EACb,sBAAsB;EACtB,2BAA2B;AAC7B;AACA;EACE,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,SAAS;EACT,YAAY;AACd;;AAEA;EACE,sCAAsC;EACtC,UAAU;EACV,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;;AAEA;EACE,kBAAkB;EAClB,QAAQ;EACR,YAAY;EACZ,WAAW;;AAEb;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,YAAY;EACZ,iBAAiB;EACjB,eAAe;AACjB","sourcesContent":["body {\n  height: 100vh;\n  width: 100vw;\n  overflow: hidden;\n  /* background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000); */\n  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;\n\n}\nh1 {\n  /* background: #E76F51;\n  background: linear-gradient(to right, #E76F51 0%, #F4A261 100%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent; */\n  color: white;\n  text-align: center;\n\n}\n\n\n.logout-button {\n  /* background-color: #B4F8C8; */\n  background-color: transparent;\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n\n  outline: 1px solid rgba(255, 255, 255, 0.104) !important;\n  transition: 0.25s;\n\n}\n.logout-button:hover {\n  cursor: pointer;\n  outline: 0 !important;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.flex-row {\n  display:flex;\n  width: 100%;\n}\n\n.center{\n  justify-content: center;\n}\n\n.home-log-in {\n  display:inline-block;\n  margin-top: 100px;\n  width: 100vw;\n  text-align: center;\n}\n#logged-in{\n  justify-content: center;\n}\n.flex-col {\n  display: flex;\n  flex-direction: column;\n}\n\n.space-evenly {\n  justify-content: space-evenly;\n}\n.top-left {\n  position: absolute;\n  left:0;\n  top:0;\n  color: white;\n}\n\n.menu-button {\n  background-color: transparent;\n  border-radius: 10px;\n  font-size: 30px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n  position: absolute;\n  top:20px;\n  left: 20px;\n  transition: 0.25s;\n  z-index: 10;\n}\n\n.menu-div {\n  height:100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width:17vw;\n  max-width: 210px;\n  background-color: #114348;\n  z-index: 8;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.title {\n  position: absolute;\n  left: 70px;\n  z-index: 10;\n  top: 25px;\n  color: white;\n}\n\n.menu-div-item {\n  background-color: rgba(0, 0, 0, 0.223);\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n}\n\n.avatar {\n  position: absolute;\n  top:20px;\n  color: white;\n  right: 20px;\n\n}\n\n.fa-user {\n  margin-right: 5px;\n}\n\n.avatar-text {\n  color: white;\n  margin-right: 9px;\n  font-size: 20px;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  height: 100vh;\n  width: 100vw;\n  overflow: hidden;\n  /* background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000); */\n  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;\n\n}\nh1 {\n  /* background: #E76F51;\n  background: linear-gradient(to right, #E76F51 0%, #F4A261 100%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent; */\n  color: white;\n  text-align: center;\n\n}\n\n\n.logout-button {\n  /* background-color: #B4F8C8; */\n  background-color: transparent;\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n\n  outline: 1px solid rgba(255, 255, 255, 0.104) !important;\n  transition: 0.25s;\n\n}\n.logout-button:hover {\n  cursor: pointer;\n  outline: 0 !important;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.flex-row {\n  display:flex;\n  width: 100%;\n}\n\n.center{\n  justify-content: center;\n}\n\n.home-log-in {\n  display:inline-block;\n  margin-top: 100px;\n  width: 100vw;\n  text-align: center;\n}\n#logged-in{\n  justify-content: center;\n}\n.flex-col {\n  display: flex;\n  flex-direction: column;\n}\n\n.space-evenly {\n  justify-content: space-evenly;\n}\n.top-left {\n  position: absolute;\n  left:0;\n  top:0;\n  color: white;\n}\n\n.menu-button {\n  background-color: transparent;\n  border-radius: 10px;\n  font-size: 30px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n  position: absolute;\n  top:20px;\n  left: 20px;\n  transition: 0.25s;\n  z-index: 10;\n}\n\n.menu-div {\n  height:100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width:17vw;\n  max-width: 210px;\n  background-color: #114348;\n  z-index: 8;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.title {\n  position: absolute;\n  left: 70px;\n  z-index: 10;\n  top: 25px;\n  color: white;\n}\n\n.menu-div-item {\n  background-color: rgba(0, 0, 0, 0.223);\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n}\n.menu-div-item-selected {\n  /* background-color: rgba(0, 0, 0, 0.223); */\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n  cursor: pointer;\n  background-color: #2f686e;\n  /* background-color: black; */\n\n}\n.avatar {\n  position: absolute;\n  top:20px;\n  color: white;\n  right: 20px;\n\n}\n\n.fa-user {\n  margin-right: 5px;\n}\n\n.avatar-text {\n  color: white;\n  margin-right: 9px;\n  font-size: 20px;\n}\n\n.menu-div div:first-child {\n  margin-top: 70px;\n}", "",{"version":3,"sources":["webpack://./src/App.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;EAChB,oGAAoG;EACpG,8FAA8F,GAAG,iCAAiC;;AAEpI;AACA;EACE;;;yCAGuC;EACvC,YAAY;EACZ,kBAAkB;;AAEpB;;;AAGA;EACE,+BAA+B;EAC/B,6BAA6B;EAC7B,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,cAAc;EACd,mBAAmB;;EAEnB,wDAAwD;EACxD,iBAAiB;;AAEnB;AACA;EACE,eAAe;EACf,qBAAqB;EACrB,4CAA4C;AAC9C;AACA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,uBAAuB;AACzB;;AAEA;EACE,oBAAoB;EACpB,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;AACpB;AACA;EACE,uBAAuB;AACzB;AACA;EACE,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,6BAA6B;AAC/B;AACA;EACE,kBAAkB;EAClB,MAAM;EACN,KAAK;EACL,YAAY;AACd;;AAEA;EACE,6BAA6B;EAC7B,mBAAmB;EACnB,eAAe;EACf,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,kBAAkB;EAClB,QAAQ;EACR,UAAU;EACV,iBAAiB;EACjB,WAAW;AACb;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,OAAO;EACP,MAAM;EACN,UAAU;EACV,gBAAgB;EAChB,yBAAyB;EACzB,UAAU;EACV,aAAa;EACb,sBAAsB;EACtB,2BAA2B;AAC7B;AACA;EACE,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,SAAS;EACT,YAAY;AACd;;AAEA;EACE,sCAAsC;EACtC,UAAU;EACV,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;AACA;EACE,4CAA4C;EAC5C,UAAU;EACV,YAAY;EACZ,kBAAkB;EAClB,aAAa;EACb,eAAe;EACf,yBAAyB;EACzB,6BAA6B;;AAE/B;AACA;EACE,kBAAkB;EAClB,QAAQ;EACR,YAAY;EACZ,WAAW;;AAEb;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,YAAY;EACZ,iBAAiB;EACjB,eAAe;AACjB;;AAEA;EACE,gBAAgB;AAClB","sourcesContent":["body {\n  height: 100vh;\n  width: 100vw;\n  overflow: hidden;\n  /* background-image: linear-gradient(to left bottom, #2a0808, #230609, #1b0408, #110205, #000000); */\n  background-image: linear-gradient(to left bottom, #264653, #225b68, #1c7079, #1b8786, #2a9d8f);  font-family: 'Nunito', sans-serif;\n\n}\nh1 {\n  /* background: #E76F51;\n  background: linear-gradient(to right, #E76F51 0%, #F4A261 100%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent; */\n  color: white;\n  text-align: center;\n\n}\n\n\n.logout-button {\n  /* background-color: #B4F8C8; */\n  background-color: transparent;\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n\n  outline: 1px solid rgba(255, 255, 255, 0.104) !important;\n  transition: 0.25s;\n\n}\n.logout-button:hover {\n  cursor: pointer;\n  outline: 0 !important;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.flex-row {\n  display:flex;\n  width: 100%;\n}\n\n.center{\n  justify-content: center;\n}\n\n.home-log-in {\n  display:inline-block;\n  margin-top: 100px;\n  width: 100vw;\n  text-align: center;\n}\n#logged-in{\n  justify-content: center;\n}\n.flex-col {\n  display: flex;\n  flex-direction: column;\n}\n\n.space-evenly {\n  justify-content: space-evenly;\n}\n.top-left {\n  position: absolute;\n  left:0;\n  top:0;\n  color: white;\n}\n\n.menu-button {\n  background-color: transparent;\n  border-radius: 10px;\n  font-size: 30px;\n  border: none;\n  color: #B4F8C8;\n  font-weight: bolder;\n  position: absolute;\n  top:20px;\n  left: 20px;\n  transition: 0.25s;\n  z-index: 10;\n}\n\n.menu-div {\n  height:100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  width:17vw;\n  max-width: 210px;\n  background-color: #114348;\n  z-index: 8;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n}\n.title {\n  position: absolute;\n  left: 70px;\n  z-index: 10;\n  top: 25px;\n  color: white;\n}\n\n.menu-div-item {\n  background-color: rgba(0, 0, 0, 0.223);\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n}\n.menu-div-item-selected {\n  /* background-color: rgba(0, 0, 0, 0.223); */\n  z-index: 9;\n  color: white;\n  text-align: center;\n  padding: 20px;\n  cursor: pointer;\n  background-color: #2f686e;\n  /* background-color: black; */\n\n}\n.avatar {\n  position: absolute;\n  top:20px;\n  color: white;\n  right: 20px;\n\n}\n\n.fa-user {\n  margin-right: 5px;\n}\n\n.avatar-text {\n  color: white;\n  margin-right: 9px;\n  font-size: 20px;\n}\n\n.menu-div div:first-child {\n  margin-top: 70px;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1058,7 +1942,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".add-share-button {\n    /* background-color: #661c1c;\n     */\n    background-color: transparent;\n    color: #B4F8C8;\n    border-radius: 10px;\n    padding: 10px;\n    border: none;\n    /* color: white; */\n    font-weight: bolder;\n    /* margin-top: 30px; */\n    width: 150px;\n    outline: 1px solid rgba(255, 255, 255, 0.104);\n    /* margin-bottom: 30px; */\n    transition: 0.25s;\n\n\n}\n.add-share-button:hover {\n  cursor: pointer;\n  outline: none;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.h3-add {\n  color: white;\n  margin-top: 20px;\n}\n.h2-val {\n  color:white;\n\n}\n.space-between {\n  justify-content: space-between;\n}\n\n.crypto-share {\n  height: 200px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-evenly;\n  width: 50vw;\n  margin-left: 25vw;\n  margin-bottom: -100px;\n\n}\n.add-share-val {\n  justify-content: space-evenly;\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  width: 80vw;\n  margin-left: 10vw;\n}\n\n.margin-right {\n  margin-right: 25px;\n}\n\n.refresh-button {\n  /* background-color: #661c1c; */\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  /* color: white; */\n  font-weight: bolder;\n  background-color: transparent;\n  color: #B4F8C8;\n\n}", "",{"version":3,"sources":["webpack://./src/StockApp.css"],"names":[],"mappings":"AAAA;IACI;MACE;IACF,6BAA6B;IAC7B,cAAc;IACd,mBAAmB;IACnB,aAAa;IACb,YAAY;IACZ,kBAAkB;IAClB,mBAAmB;IACnB,sBAAsB;IACtB,YAAY;IACZ,6CAA6C;IAC7C,yBAAyB;IACzB,iBAAiB;;;AAGrB;AACA;EACE,eAAe;EACf,aAAa;EACb,4CAA4C;AAC9C;AACA;EACE,YAAY;EACZ,gBAAgB;AAClB;AACA;EACE,WAAW;;AAEb;AACA;EACE,8BAA8B;AAChC;;AAEA;EACE,aAAa;EACb,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,WAAW;EACX,iBAAiB;EACjB,qBAAqB;;AAEvB;AACA;EACE,6BAA6B;EAC7B,mBAAmB;EACnB,aAAa;EACb,mBAAmB;EACnB,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,+BAA+B;EAC/B,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,kBAAkB;EAClB,mBAAmB;EACnB,6BAA6B;EAC7B,cAAc;;AAEhB","sourcesContent":[".add-share-button {\n    /* background-color: #661c1c;\n     */\n    background-color: transparent;\n    color: #B4F8C8;\n    border-radius: 10px;\n    padding: 10px;\n    border: none;\n    /* color: white; */\n    font-weight: bolder;\n    /* margin-top: 30px; */\n    width: 150px;\n    outline: 1px solid rgba(255, 255, 255, 0.104);\n    /* margin-bottom: 30px; */\n    transition: 0.25s;\n\n\n}\n.add-share-button:hover {\n  cursor: pointer;\n  outline: none;\n  background-color: rgba(255, 255, 255, 0.104);\n}\n.h3-add {\n  color: white;\n  margin-top: 20px;\n}\n.h2-val {\n  color:white;\n\n}\n.space-between {\n  justify-content: space-between;\n}\n\n.crypto-share {\n  height: 200px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-evenly;\n  width: 50vw;\n  margin-left: 25vw;\n  margin-bottom: -100px;\n\n}\n.add-share-val {\n  justify-content: space-evenly;\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  width: 80vw;\n  margin-left: 10vw;\n}\n\n.margin-right {\n  margin-right: 25px;\n}\n\n.refresh-button {\n  /* background-color: #661c1c; */\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  /* color: white; */\n  font-weight: bolder;\n  background-color: transparent;\n  color: #B4F8C8;\n\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".add-share-button {\n    /* background-color: #661c1c;\n     */\n    background-color: transparent;\n    color: #B4F8C8;\n    border-radius: 10px;\n    padding: 10px;\n    border: none;\n    /* color: white; */\n    font-weight: bolder;\n    /* margin-top: 30px; */\n    width: 150px;\n    outline: 1px solid rgba(255, 255, 255, 0.104);\n    /* margin-bottom: 30px; */\n    transition: 0.25s;\n    align-self: center;\n\n\n}\n.add-share-button:hover {\n  cursor: pointer;\n}\n.h3-add {\n  color: white;\n  margin-top: 20px;\n}\n.h2-val {\n  color:white;\n\n}\n.space-between {\n  justify-content: space-between;\n}\n\n.crypto-share {\n  height: 200px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-evenly;\n  width: 50vw;\n  margin-left: 25vw;\n  margin-bottom: -100px;\n\n}\n.add-share-val {\n  justify-content: space-evenly;\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  width: 80vw;\n  margin-left: 10vw;\n}\n\n.margin-right {\n  margin-right: 25px;\n}\n\n.refresh-button {\n  /* background-color: #661c1c; */\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  /* color: white; */\n  font-weight: bolder;\n  background-color: transparent;\n  color: #B4F8C8;\n\n}", "",{"version":3,"sources":["webpack://./src/StockApp.css"],"names":[],"mappings":"AAAA;IACI;MACE;IACF,6BAA6B;IAC7B,cAAc;IACd,mBAAmB;IACnB,aAAa;IACb,YAAY;IACZ,kBAAkB;IAClB,mBAAmB;IACnB,sBAAsB;IACtB,YAAY;IACZ,6CAA6C;IAC7C,yBAAyB;IACzB,iBAAiB;IACjB,kBAAkB;;;AAGtB;AACA;EACE,eAAe;AACjB;AACA;EACE,YAAY;EACZ,gBAAgB;AAClB;AACA;EACE,WAAW;;AAEb;AACA;EACE,8BAA8B;AAChC;;AAEA;EACE,aAAa;EACb,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,WAAW;EACX,iBAAiB;EACjB,qBAAqB;;AAEvB;AACA;EACE,6BAA6B;EAC7B,mBAAmB;EACnB,aAAa;EACb,mBAAmB;EACnB,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,+BAA+B;EAC/B,mBAAmB;EACnB,aAAa;EACb,YAAY;EACZ,kBAAkB;EAClB,mBAAmB;EACnB,6BAA6B;EAC7B,cAAc;;AAEhB","sourcesContent":[".add-share-button {\n    /* background-color: #661c1c;\n     */\n    background-color: transparent;\n    color: #B4F8C8;\n    border-radius: 10px;\n    padding: 10px;\n    border: none;\n    /* color: white; */\n    font-weight: bolder;\n    /* margin-top: 30px; */\n    width: 150px;\n    outline: 1px solid rgba(255, 255, 255, 0.104);\n    /* margin-bottom: 30px; */\n    transition: 0.25s;\n    align-self: center;\n\n\n}\n.add-share-button:hover {\n  cursor: pointer;\n}\n.h3-add {\n  color: white;\n  margin-top: 20px;\n}\n.h2-val {\n  color:white;\n\n}\n.space-between {\n  justify-content: space-between;\n}\n\n.crypto-share {\n  height: 200px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-evenly;\n  width: 50vw;\n  margin-left: 25vw;\n  margin-bottom: -100px;\n\n}\n.add-share-val {\n  justify-content: space-evenly;\n  align-items: center;\n  display: flex;\n  flex-direction: row;\n  width: 80vw;\n  margin-left: 10vw;\n}\n\n.margin-right {\n  margin-right: 25px;\n}\n\n.refresh-button {\n  /* background-color: #661c1c; */\n  border-radius: 10px;\n  padding: 10px;\n  border: none;\n  /* color: white; */\n  font-weight: bolder;\n  background-color: transparent;\n  color: #B4F8C8;\n\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

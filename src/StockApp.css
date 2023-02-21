@@ -13,13 +13,12 @@
     outline: 1px solid rgba(255, 255, 255, 0.104);
     /* margin-bottom: 30px; */
     transition: 0.25s;
+    align-self: center;
 
 
 }
 .add-share-button:hover {
   cursor: pointer;
-  outline: none;
-  background-color: rgba(255, 255, 255, 0.104);
 }
 .h3-add {
   color: white;

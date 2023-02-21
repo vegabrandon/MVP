@@ -6,6 +6,7 @@ import Login from './Login.jsx'
 import CryptoApp from './CryptoApp.jsx';
 import { motion } from 'framer-motion'
 import HamburgerMenu from './HamburgerMenu.jsx';
+import CustomList from './CustomList.jsx'
 
 function App() {
   const [user, setUser] = useState({})
@@ -19,6 +20,13 @@ function App() {
     axios.get('/logout')
       .then(data => {setUser({});})
   }
+  const returnCustomList = (str) => {
+    for (var i = 0; i < user.lists.length; i ++) {
+      if (user.lists[i].name === str) {
+        return <CustomList list={user.lists[i].list} name={user.lists[i].name} user={user} setUser={setUser} />
+      }
+    }
+  }
 
   useEffect(() => {
     axios.get('http://localhost:3001/session')
@@ -30,7 +38,11 @@ function App() {
       })
   }, [])
 
-  useEffect(() => {}, [user])
+  useEffect(() => {
+    if (currentApp !== 'Stock' && currentApp !== 'Crypto' && currentApp.length > 0) {
+      setCurrentApp(currentApp)
+    }
+  }, [user])
   return (
     <div className="App" id='App'>
       {/* CHECK IF REQUEST FOR USER LOGGED IN IS TRUE */}
@@ -39,6 +51,7 @@ function App() {
         {Object.keys(user).length === 0 ? (
           // IS NOT LOGGED IN
         <div className='home-log-in'>
+          {console.log('USER',user)}
           <motion.h1
               transition={{type: 'spring', delay: 1, duration: 5}}
               initial={{opacity: 0}}
@@ -63,7 +76,7 @@ function App() {
         <div className='home-log-in flex-col'>
 
 
-          <div className='flex-row center' id='logged-in'>
+          <div className='flex-col center' id='logged-in'>
             <motion.h1
               transition={{type: 'spring', stiffness: 500, damping: 50, duration: 2, delay:0.5}}
               initial={{opacity: .5, scale: 0.5, x: -50000}}
@@ -85,7 +98,7 @@ function App() {
 
           <StockApp user={user} setUser={setUser} setCurrentApp={setCurrentApp} />
           </div>
-          ) : (<CryptoApp />)}
+          ) : currentApp === 'Crypto' ? (<CryptoApp user={user} setUser={setUser}/>) : currentApp.length > 0 ? returnCustomList(currentApp) : null}
 
         </div>
         </>)

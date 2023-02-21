@@ -3,13 +3,10 @@ import {motion} from 'framer-motion';
 import Modal from 'react-modal'
 import axios from 'axios'
 const HamburgerMenu = ({currentApp, setCurrentApp, user, setUser}) => {
-  const [showModal, setShowModal] = useState(false);
-  const [symbol, setSymbol] = useState('')
-  const [shares, setShares] = useState('');
-  const handleSymbolSubmission = () => {
-    axios.post(`/users/${user._id}/stocks`, {symbol, shares})
-      .then(data => {setUser(data.data); setShowModal(false); });
-  }
+  const [showListModal, setShowListModal] = useState(false);
+  const [newListName, setNewListName] = useState('')
+  const [portfolioList, setPortfolioList] = useState([]);
+
   const stylesShareModal = {
     overlay: {
       position: "fixed",
@@ -41,68 +38,159 @@ const HamburgerMenu = ({currentApp, setCurrentApp, user, setUser}) => {
     }
   };
 
+  const removeTimestamp = (ts) => {
+    var copiedList = JSON.parse(JSON.stringify(portfolioList));
+    for (var i = 0; i < copiedList.length; i ++) {
+      if (copiedList[i] === ts) {
+        copiedList.splice(i, 1);
+        break;
+      }
+    }
+    return copiedList;
+  }
+
+  const handleOnChangeCheck = (e) => {
+    var timestamp = e.target.id;
+    if (e.target.checked) {
+      setPortfolioList([...portfolioList, e.target.id])
+    } else {
+      setPortfolioList(removeTimestamp(timestamp))
+    }
+  }
+
+  const handleListSubmission = (e) => {
+    e.preventDefault();
+    axios.post(`/users/${user._id}/lists/new`, { name: newListName, timestamps: portfolioList})
+      .then(user => {setUser(user.data); setShowListModal(false); setNewListName(''); setPortfolioList([])})
+  }
+
+
+
   const whileHover = {outline: 'none', cursor: 'pointer', backgroundColor: '#2f686e'};
 
 return (
 <>
+  {/* ADD LIST MODAL */}
   <Modal
-    isOpen={showModal}
-    onRequestClose={(e) => {setShowModal(false)}}
-    appElement={document.getElementById('App')}
-    style={stylesShareModal}
-  >
+      isOpen={showListModal}
+      style={stylesShareModal}
+      appElement={document.getElementById('App')}
+    >
+      <h2>Add a New List</h2>
+      <h4>New List Name</h4>
+      <input className='form-control' type="text" onChange={e => setNewListName(e.target.value)}/>
 
-    <h2>Add to your portfolio</h2>
 
-    <h4>Stock Symbol</h4>
-    <input className='form-control' type="text" onChange={e => setSymbol(e.target.value)}/>
+      <div className="flex-row space-evenly">
 
-    <h4># of Shares</h4>
-    <input className='form-control' type="text" onChange={e => setShares(e.target.value)} />
-    <div className='flex-row'>
-      <button className='login-form-button' onClick={handleSymbolSubmission}>Submit</button>
-      <button className='login-form-button' onClick={() => {setShowModal(false)}}>Close</button>
-    </div>
-  </Modal>
+        <div className="flex-col">
+          <div><h4>Crypto:</h4></div>
+          {user.crypto.map(cryp => (
+            <div className='flex-row'>
+              <input type="checkbox" id={cryp.timestamp} name={cryp.timestamp} value={cryp.timestamp} onChange={handleOnChangeCheck}/>
+              <label htmlFor={cryp.timestamp}>&nbsp;{cryp.symbol} - ${parseFloat(parseFloat(cryp.quote['USD'].price) * parseFloat(cryp.share_count)).toFixed(2)}</label>
+            </div>
+          ))}
+        </div>
+        <div className="flex-col">
+          <div><h4>Stocks:</h4></div>
+
+          {user.stocks.map(stock => (
+            <div className='flex-row'>
+              <input type="checkbox" id={stock.timestamp} name={stock.timestamp} value={stock.timestamp} onChange={handleOnChangeCheck}/>
+              <label htmlFor={stock.timestamp}>&nbsp;{stock.symbol} - ${parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)}</label>
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+      <div className='flex-row'>
+        <button className='login-form-button' onClick={handleListSubmission}>Submit</button>
+        <button className='login-form-button' onClick={() => {setShowListModal(false)}}>Close</button>
+      </div>
+
+
+    </Modal>
 
   <motion.div
-    transition={{ duration: 1}}
+    transition={{ duration: 0.5}}
     initial={{x: -1000}}
     animate={{x: 0}}
     className='menu-div'
   >
     {
       currentApp === 'Stock' ? (
-      <>
-        {/* <motion.div
-          className='menu-div-item'
-          style={{marginTop: '70px'}}
-          transition={{duration: 0.25}}
-          whileHover={{outline: 'none', cursor: 'pointer', backgroundColor: '#2f686e'}}
-          onClick={() => {setShowModal(true)}}
+        <div
+          className='menu-div-item-selected'
         >
-          Add to portfolio
-        </motion.div> */}
-        <motion.div
-          className='menu-div-item'
-          style={{marginTop: '70px'}}
-          transition={{duration: 0.25}}
-          whileHover={whileHover}
-          // onClick={handleAddList}
-        >
-          Add portfolio list.
-        </motion.div>
+        Stock Portfolio
+        </div>
+      ) : (
         <motion.div
         className='menu-div-item'
-        transition={{duration: 0.25}}
         whileHover={whileHover}
-        onClick={() => {setCurrentApp('Crypto')}}
+        onClick={() => {setCurrentApp('Stock')}}
       >
-        Switch to Crypto Portfolio
-      </motion.div>
-    </>
-    ) : null
-  }
+      Stock Portfolio
+        </motion.div>
+      )
+    }
+    {
+      currentApp === 'Crypto' ? (
+        <div
+          className='menu-div-item-selected'
+        >
+          Crypto Portfolio
+        </div>
+      ) : (
+        <motion.div
+          className='menu-div-item'
+          onClick={() => {setCurrentApp('Crypto')}}
+          whileHover={whileHover}
+        >
+          Crypto Portfolio
+        </motion.div>
+      )
+    }
+    <motion.div
+          className='menu-div-item'
+          transition={{duration: 0.25}}
+          whileHover={whileHover}
+          onClick={(e) => setShowListModal(true)}
+        >
+          Add Portfolio List
+    </motion.div>
+    {
+      user && user.lists && user.lists.length > 0 ? (
+        user.lists.map((obj) => {
+          console.log('TRUEEEEE')
+          if (currentApp === obj.name) {
+            return (
+              <div
+                className='menu-div-item-selected'
+              >
+                {obj.name}
+              </div>
+              )
+          } else {
+            return (
+              <motion.div
+                className='menu-div-item'
+                transition={{duration: 0.25}}
+                whileHover={whileHover}
+                onClick={() => {setCurrentApp(obj.name)}}
+              >
+                {obj.name}
+              </motion.div>
+              )
+          }
+          })
+      ) : console.log('FALSEEEEE')
+    }
+
     </motion.div>
 </>
     )

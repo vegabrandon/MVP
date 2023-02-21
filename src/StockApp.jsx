@@ -2,9 +2,13 @@ import axios from 'axios';
 import { React, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import './StockApp.css';
-import {motion} from 'framer-motion';
 import StockList from './StockList.jsx'
+import { motion } from 'framer-motion'
 const StockApp = ({user, setUser}) => {
+  const [symbol, setSymbol] = useState('')
+  const [shares, setShares] = useState('');
+
+  const [showModal, setShowModal] = useState(false);
 
   const [showEditModal, setShowEditModal] = useState({});
   const [newShareCount, setNewShareCount] = useState(0);
@@ -16,6 +20,10 @@ const StockApp = ({user, setUser}) => {
       .catch(err => console.error('Error deleting', err))
   }
 
+  const handleSymbolSubmission = () => {
+    axios.post(`/users/${user._id}/stocks`, {symbol, shares})
+      .then(data => {setUser(data.data); setShowModal(false); });
+  }
   const handleEdit = () => {
     axios.put(`/users/${user._id}/stocks/${showEditModal.symbol}/${newShareCount}`)
       .then(user => {setUser(user.data); setShowEditModal({})})
@@ -86,6 +94,34 @@ const StockApp = ({user, setUser}) => {
           <button className='login-form-button' onClick={() => {setShowEditModal({})}}>Close</button>
         </div>
       </Modal>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={(e) => {setShowModal(false)}}
+        appElement={document.getElementById('App')}
+        style={stylesShareModal}
+      >
+
+        <h2>Add to your portfolio</h2>
+
+        <h4>Stock Symbol</h4>
+        <input className='form-control' type="text" onChange={e => setSymbol(e.target.value)}/>
+
+        <h4># of Shares</h4>
+        <input className='form-control' type="text" onChange={e => setShares(e.target.value)} />
+        <div className='flex-row'>
+          <button className='login-form-button' onClick={handleSymbolSubmission}>Submit</button>
+          <button className='login-form-button' onClick={() => {setShowModal(false)}}>Close</button>
+        </div>
+      </Modal>
+
+            <motion.button
+              transition={{duration: 0.25}}
+              className="add-share-button"
+              whileHover={{ backgroundColor:'rgba(255, 255, 255, 0.104)', outline: 'none' }}
+              onClick={() => {setShowModal(true)}}
+            >
+              Add to portfolio
+            </motion.button>
       <div className='flex-col' style={{marginTop: '50px'}}>
 
         {console.log('USER CONSOLE LOGS', user)}
@@ -98,6 +134,7 @@ const StockApp = ({user, setUser}) => {
       {user.stocks.length > 0 ? (
         <>
           <center>
+
             <StockList openModal={openModal} handleRemoval={handleRemoval} stocks={user.stocks} />
           </center>
         </>

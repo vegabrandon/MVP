@@ -60,7 +60,7 @@ const StockList = ({ stocks, handleRemoval, openModal }) => {
           </div>
           {stocks.map(stock => <div className="stock-daily flex-col center">
               <h3>
-                {parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)}
+                ${parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)}
               </h3>
           </div>)}
         </div>
@@ -91,39 +91,6 @@ const StockList = ({ stocks, handleRemoval, openModal }) => {
 
 
       </div>
-    {/* {stocks.map(stock => (
-      <div className="flex-row">
-        <div className="stock flex-row">
-          <div>
-            <h1 className="stock-symbol">{stock.symbol}</h1>
-            <h3>{stock.name}</h3>
-          </div>
-
-          <div className="flex-col center">
-            <h3>${stock.close}</h3>
-          </div>
-
-          <div className="flex-col center">
-            <h3>{stock.percent_change}%</h3>
-          </div>
-          <div className="center">
-            <h4>
-              {stock.share_count}
-            </h4>
-            <h4>Value: {parseFloat(parseFloat(stock.close) * parseFloat(stock.share_count)).toFixed(2)}</h4>
-          </div>
-          <div className="flex-col space-evenly stock-buttons">
-          <button className="stock-button" onClick={() => {openModal(stock.symbol)}}>
-            Edit
-          </button>
-          <button className="stock-button" onClick={() => {handleRemoval(stock.symbol)}}>
-            Remove
-          </button>
-        </div>
-        </div>
-      </div>
-
-    ))} */}
     </div>
   )
 }

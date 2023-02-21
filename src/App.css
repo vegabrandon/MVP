@@ -110,7 +110,17 @@ h1 {
   text-align: center;
   padding: 20px;
 }
+.menu-div-item-selected {
+  /* background-color: rgba(0, 0, 0, 0.223); */
+  z-index: 9;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #2f686e;
+  /* background-color: black; */
 
+}
 .avatar {
   position: absolute;
   top:20px;
@@ -127,4 +137,8 @@ h1 {
   color: white;
   margin-right: 9px;
   font-size: 20px;
+}
+
+.menu-div div:first-child {
+  margin-top: 70px;
 }

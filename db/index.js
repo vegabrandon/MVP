@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const { resolve } = require('path');
 const { abort } = require('process');
+const { all } = require('axios');
 const db = {};
 mongoose.connect('mongodb://127.0.0.1:27017/mvp');
 
@@ -12,8 +13,9 @@ var userSchema = mongoose.Schema({
   },
   password: String,
   stocks: [Object],
-  crypto: [Object]
-});
+  crypto: [Object],
+  lists: [Object],
+}, {minimize: false});
 
 var User = mongoose.model('User', userSchema);
 
@@ -59,7 +61,7 @@ db.addUser = (user, session) => {
     var currUser;
     hash(user.password)
       .then(pass => {
-        var newUser = new User({user: user.username , password: pass, stocks: []})
+        var newUser = new User({user: user.username , password: pass, stocks: [], crypto: [], lists: []})
         newUser.save()
           .then(data => {
             currUser = data
@@ -124,7 +126,9 @@ db.addStock = (stock, user, shares) => {
     User.findById(user)
       .then(doc => {
         stock.share_count = shares
+        stock.timestamp = new Date().getTime()
         doc.stocks.push(stock)
+
         return doc.save()
       })
       .then(data => {
@@ -148,10 +152,20 @@ db.logout = (session) => {
       .catch(err => reject());
   })
 }
-db.addCrypto = (user_id, crypto, shares) => {
+db.addCrypto = (crypto, user, shares) => {
   return new Promise((resolve, reject) => {
-
-  });
+    User.findById(user)
+      .then(doc => {
+        crypto.share_count = shares
+        crypto.timestamp = new Date().getTime()
+        doc.crypto.push(crypto)
+        return doc.save()
+      })
+      .then(data => {
+        resolve(db.formatUser(data))
+      })
+      .catch(err => {reject(err)});
+  })
 }
 
 db.deleteStock = (id, symbol) => {
@@ -162,6 +176,15 @@ db.deleteStock = (id, symbol) => {
           if (doc.stocks[i].symbol === symbol) {
             doc.stocks.splice(i, 1)
             break;
+          }
+        }
+        console.log('FIRST ITERATION DONE')
+        for (var i = 0; i < doc.lists.length; i++) {
+          for (var j = 0; j < doc.lists[i].list.length; j ++) {
+            console.log('CURRENT LIST', doc.lists[i].list[j])
+            if (doc.lists[i].list[j].symbol === symbol) {
+              doc.lists[i].list.splice(j, 1)
+            }
           }
         }
         return doc.save()
@@ -175,17 +198,106 @@ db.editStock = (id, symbol, newShareCount) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
       .then(doc => {
-        console.log('DOCCCC', doc)
         for (var i = 0; i < doc.stocks.length; i ++) {
           if (doc.stocks[i].symbol === symbol) {
             doc.stocks[i].share_count = newShareCount;
             break;
           }
         }
+        for (var i = 0; i < doc.lists.length; i++) {
+          for (var j = 0; j < doc.lists[i].list.length; j ++) {
+            if (doc.lists[i].list[j].symbol === symbol) {
+              doc.lists[i].list[j].share_count = newShareCount;
+            }
+          }
+        }
         return doc.save()
       })
       .then(user => resolve(db.formatUser(user)))
       .catch(err => reject(err))
+  })
+}
+db.deleteCrypto = (id, symbol) => {
+  return new Promise((resolve, reject) => {
+    User.findById(id)
+      .then(doc => {
+        for (var i = 0; i < doc.crypto.length; i ++) {
+          if (doc.crypto[i].symbol === symbol) {
+            doc.crypto.splice(i, 1)
+            break;
+          }
+        }
+        console.log('FIRST ITERATION DONE')
+        for (var i = 0; i < doc.lists.length; i++) {
+          for (var j = 0; j < doc.lists[i].list.length; j ++) {
+            console.log('CURRENT ELEMENT', doc.lists[i].list[j])
+            if (doc.lists[i].list[j].symbol === symbol) {
+              console.log()
+              doc.lists[i].list.splice(j, 1)
+            }
+          }
+        }
+        return doc.save()
+      })
+      .then(user => resolve(db.formatUser(user)))
+      .catch(err => reject(err))
+  })
+}
+
+db.editCrypto = (id, symbol, newShareCount) => {
+  return new Promise((resolve, reject) => {
+    User.findById(id)
+      .then(doc => {
+        for (var i = 0; i < doc.crypto.length; i ++) {
+          if (doc.crypto[i].symbol === symbol) {
+            doc.crypto[i].share_count = newShareCount;
+            break;
+          }
+        }
+        for (var i = 0; i < doc.lists.length; i++) {
+          for (var j = 0; j < doc.lists[i].list.length; j ++) {
+            if (doc.lists[i].list[j].symbol === symbol) {
+              doc.lists[i].list[j].share_count = newShareCount;
+            }
+          }
+        }
+        return doc.save()
+      })
+      .then(user => resolve(db.formatUser(user)))
+      .catch(err => reject(err))
+  })
+}
+
+db.addList = (id, timestamps, name) => {
+  return new Promise((resolve, reject) => {
+    User.findById(id)
+      .then(doc => {
+        var allObjects = [];
+
+        // push selected cryptos
+        for (var i = 0; i < doc.crypto.length; i++) {
+          for (var j = 0; j < timestamps.length; j++ ) {
+            if (doc.crypto[i].timestamp === parseInt(timestamps[j])) {
+              allObjects.push(doc.crypto[i]);
+            }
+          }
+        }
+
+        // push selected stocks
+        for (var x = 0; x < doc.stocks.length; x++) {
+          for (var y = 0; y < timestamps.length; y++ ) {
+            if (doc.stocks[x].timestamp === parseInt(timestamps[y])) {
+              allObjects.push(doc.stocks[x]);
+            }
+          }
+        }
+        doc.lists.push({name, list: allObjects });
+        return doc.save()
+      })
+      .then(user => resolve(db.formatUser(user)))
+      .catch(err => {console.log('ERER', err); reject(err)})
+
+
   })
 }
 
