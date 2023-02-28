@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3 align="center">Portfolio MVP</h3>
+<h3 name="readme-top" align="center">Portfolio MVP</h3>
   <p align="center">
     Add stocks and crypto to your user account, and categorize them into customized lists. Made in a 2-3 day timeline.
     <br />
@@ -26,8 +26,12 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 
 ### Built With
-* [![React][React.js]][React-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* React
+* Bootstrap
+* Node
+* Express
+* TwelveData API
+* CryptoMarketCap API
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
