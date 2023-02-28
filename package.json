@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server-dev": "npx nodemon --watch server server/index.js",
+    "server-dev": "npx nodemon --watch server server.js",
     "client-dev": "npx webpack --watch"
   },
   "eslintConfig": {

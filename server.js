@@ -77,7 +77,7 @@ app.post('/users/:id/stocks', (req, res) => {
 });
 
 app.post('/users/:id/crypto', (req, res) => {
-  axios.get(`${process.env.APICRYPTO_URL}/cryptocurrency/quotes/latest?symbol=${req.body.symbol}`, {headers:{"X-CMC_PRO_API_KEY": process.env.APICRYPTO_KEY}})
+  axios.get(`${process.env.APICRYPTO_URL}/cryptocurrency/quotes/latest?symbol=${req.body.symbol}`, { headers: { "X-CMC_PRO_API_KEY": process.env.APICRYPTO_KEY } })
     .then(data => {
       console.log('API BACK', data.data.data[req.body.symbol][0])
       return db.addCrypto(data.data.data[req.body.symbol][0], req.params.id, req.body.shares)
@@ -105,8 +105,8 @@ app.put('/users/:id/stocks/:symbol/:newcount', (req, res) => {
 
 app.delete('/users/:id/crypto/:symbol', (req, res) => {
   db.deleteCrypto(req.params.id, req.params.symbol)
-    .then(user => {console.log('USERRRR', user);res.send(user)})
-    .catch(err => {console.log('ERRR', err); res.send(err)});
+    .then(user => { console.log('USERRRR', user); res.send(user) })
+    .catch(err => { console.log('ERRR', err); res.send(err) });
 })
 
 app.put('/users/:id/crypto/:symbol/:newcount', (req, res) => {
